@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+  <script src="../build/prop-types.js"></script>
+  <title>Html模板</title>
+</head>
+
+<body>
+  <div id='example'></div>
+  <script type='text/babel'>
+    var data = '123'
+
+    class MyTitle extends React.Component {
+      static propTypes = {
+        title: PropTypes.string.isRequired,
+      }
+
+      render() {
+        return <p>myTitle: {this.props.title}</p>
+      }
+    }
+
+    class MyComponent extends React.Component {
+      constructor(props) {
+        super(props)
+        this.myTestInput = React.createRef()
+        this.handleClick = this.handleClick.bind(this)
+      }
+
+      handleClick() {
+        this.myTestInput.current.focus()
+      }
+
+      render() {
+        return (
+          <div>
+            <input type='text' ref={this.myTestInput} />
+            <input type='button' value='button' onClick={this.handleClick} />
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(
+      <div>
+       <MyTitle title={data}/>
+       <MyComponent />
+      </div>,
+      document.getElementById('example')
+    )
+  </script>
+</body>
+
+</html>
