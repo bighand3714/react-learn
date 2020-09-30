@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+  <title>Html模板</title>
+</head>
+
+<body>
+  <div id='example'></div>
+  <script type='text/babel'>
+    var RepoList = React.createClass({
+      getInitialState: function () {
+        return {
+          loading: true,
+          error: null,
+          data: null,
+        }
+      },
+      componentDidMount () {
+        this.props.promise.then(
+          value => this.state({
+            loading: false,
+            data: value,
+          }),
+          error => this.state({
+            loading: false,
+            error: error,
+          }),
+        )
+      },
+      render: function() {
+        if (this.state.loading) {
+          return <span>Loading...</span>
+        } else if (this.state.error !== null) {
+          return <span>Error: {this.state.error.message}</span>
+        } else {
+          var repos = this.state.data.items
+          var repoList = repos.map(function (repo) {
+            return (
+              <li>
+                <a href={repo.html_url}>{repo.name}</a>
+              </li>
+            )
+          })
+        }
+      }
+    })
+    ReactDOM.render(
+      <span> Html模板 </span>,
+      document.getElementById('example')
+    )
+  </script>
+</body>
+
+</html>
