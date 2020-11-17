@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="build/react.development.js"></script>
+  <script src="build/react-dom.development.js"></script>
+  <script src="build/babel.min.js"></script>
+  <title>组件&props</title>
+</head>
+
+<body>
+  <div>组件，从概念上类似于 JavaScript 函数。它接受任意的入参（即 “props”），并返回用于描述页面展示内容的 React 元素。</div>
+  <div>当 React 元素为用户自定义组件时，它会将 JSX 所接收的属性（attributes）以及子组件（children）转换为单个对象传递给组件，这个对象被称之为 “props”。</div>
+  <b>所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。</b>
+  <div id='example'></div>
+  <script type='text/babel'>
+    // 用户自定义组件
+    // 函数组件
+    function WelcomeFunc(props) {
+      return <h1>Hello, {props.name}</h1>
+    }
+
+    // class 组件
+    // 我们强烈建议你不要创建自己的组件基类。 
+    // 在 React 组件中，代码重用的主要方式是组合而不是继承。
+    class WelcomeClass extends React.Component {
+      render() {
+        return <h1>Hello, {this.props.name}</h1>
+      }
+    }
+
+    // 页面渲染“hello sera”
+    const element = <WelcomeFunc name="sera" />
+    const elementClass = <WelcomeClass name="seraf" />
+
+    // 组合组件
+    const App = () => {
+      return (
+        <div>
+          <WelcomeClass name="heat" />
+          <WelcomeClass name="sera" />
+          <WelcomeClass name="serf" />
+        </div>
+      )
+    }
+
+    ReactDOM.render(
+      // elementClass,
+      <App/>,
+      document.getElementById('example')
+    )
+  </script>
+</body>
+
+</html>

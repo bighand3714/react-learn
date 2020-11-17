@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="build/react.development.js"></script>
+  <script src="build/react-dom.development.js"></script>
+  <script src="build/babel.min.js"></script>
+  <title>JSX</title>
+</head>
+
+<body>
+  <div>React 认为渲染逻辑本质上与其他 UI 逻辑内在耦合</div>
+  <span>React 并没有采用将标记与逻辑进行分离到不同文件这种人为地分离方式，而是通过将二者共同存放在称之为“组件”的松散耦合单元之中，来实现关注点分离。</span>
+  <p>在 JSX 语法中，你可以在大括号内放置任何有效的 JavaScript 表达式。</p>
+  <div id='example'></div>
+  <script type='text/babel'>
+    // 在 JSX 语法中，你可以在大括号内放置任何有效的 JavaScript 表达式。
+    const names = {
+      first: 'bighand',
+      last: '3714',
+    }
+    const formatName = user => {
+      return user.first + user.last
+    }
+    const element = <h1>hello, {formatName(names)}</h1>
+
+    // 你可以通过使用引号，来将属性值指定为字符串字面量：
+    const element = <div tabIndex="0"></div>;
+
+    // 也可以使用大括号，来在属性值中插入一个 JavaScript 表达式：
+    const element = <img src={user.avatarUrl}></img>;
+
+    ReactDOM.render(
+      element,
+      document.getElementById('example')
+    )
+  </script>
+</body>
+
+</html>
