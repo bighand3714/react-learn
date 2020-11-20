@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="build/react.development.js"></script>
+  <script src="build/react-dom.development.js"></script>
+  <script src="build/babel.min.js"></script>
+  <title>列表 & key</title>
+</head>
+
+<body>
+  <p>你可以通过使用 {} 在 JSX 内构建一个元素集合。</p>
+  <p>key 只是在兄弟节点之间必须唯一</p>
+  <div id='example'></div>
+  <script type='text/babel'>
+    const numbers = [1, 2, 39, 4, 5]
+    // // const doubled = numbers.map(number => number * 2)
+    // // console.log(doubled)
+
+    // const listItems = numbers.map(number => {
+    //   return <li>{number}</li>
+    // })
+
+    // 我们可以把前面的例子重构成一个组件，这个组件接收 numbers 数组作为参数并输出一个元素列表。
+    function NumberList(props) {
+      const numbers = props.numbers
+      const listItems = numbers.map((number, index) => {
+        // 万不得已你可以使用元素索引 index 作为 key
+        console.log('key: ', index)
+        return <li key={index}>{number}</li>
+      })
+      return (
+        <ul>{listItems}</ul>
+      )
+    }
+
+    ReactDOM.render(
+      <NumberList numbers={numbers} />,
+      document.getElementById('example')
+    )
+  </script>
+</body>
+
+</html>
