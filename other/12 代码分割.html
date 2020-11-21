@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="build/react.development.js"></script>
+  <script src="build/react-dom.development.js"></script>
+  <script src="build/babel.min.js"></script>
+  <title>代码分割</title>
+</head>
+
+<body>
+  <div id='example'></div>
+  <script type='text/babel'>
+    // react.lazy
+    const LoginControl = lazy(() => import('test'))
+    
+    ReactDOM.render(
+      <LoginControl />,
+      document.getElementById('example')
+    )
+  </script>
+</body>
+
+</html>
