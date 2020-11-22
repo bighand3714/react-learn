@@ -16,35 +16,93 @@
     class AudioPlay extends React.Component {
       constructor(props) {
         super(props);
-        this.durationRef = React.createRef();
         this.state = {
+          isPlay: false,
           duration: 0,
+          currentTime: 0,
         }
-        this.getDuration = this.getDuration.bind(this);
+        this.audioControl = this.audioControl.bind(this);
       }
 
-      getDuration(e) {
-        // this.setState({
-        //   duration: e.target.duration
-        // })
-        this.durationRef.current.duration()
+      componentDidMount() {
+        console.log(this.audio);
+        this.audio.addEventListener('canplay', () => {
+          // console.log('canplay');
+          // console.log(this.audio.duration);
+          this.setState({
+            duration: parseInt(this.audio.duration),
+          });
+        });
+        this.audio.addEventListener('timeupdate', () => {
+          // console.log(this.audio.currentTime);
+          this.setState({
+            currentTime: parseInt(this.audio.currentTime),
+          });
+        });
       }
+
+      componentDidUpdate() {
+        console.log('componentDidUpdate')
+      }
+
+      audioControl(e) {
+        // console.log(e.target);
+        if (this.state.isPlay) {
+          this.setState({
+            isPlay: !this.state.isPlay,
+          });
+          this.audio.pause();
+        } else {
+          this.setState({
+            isPlay: !this.state.isPlay,
+          });
+          this.audio.play();
+        }
+      }
+
+      // 秒转换-分:秒的格式
+      getTime = time => {
+        if (time) {
+          const minute = parseInt((time / 60) % 60);
+          const second = parseInt(time % 60);
+          let minuteText = `${minute}`;
+          let secondText = `${second}`;
+          if (minute < 10) {
+            minuteText = `0${minute}`;
+          }
+          if (second < 10) {
+            secondText = `0${second}`;
+          }
+          return `${minuteText}:${secondText}`;
+        } else {
+          return "00:00";
+        }
+      };
 
       render() {
-        const duration = this.state.duration;
-
         return (
           <div>
-            <p>{duration}</p>
+            <p>时间：{this.getTime(this.state.currentTime)} / {this.getTime(this.state.duration)}</p>
+            <input
+              type="button"
+              value={this.state.isPlay ? 'PAUSE' : 'PLAY'}
+              onClick={this.audioControl}
+            />
             <audio
               src="https://music.163.com/song/media/outer/url?id=548967.mp3"
-              controls='controls'
-              duration={this.getDuration}
+              controls
+              ref={ref => this.audio = ref}
             />
           </div>
         )
       }
     }
+    
+    class MusicList extends React.Component {
+      // http://musicapi.leanapp.cn/playlist/detail?id=24381616
+      
+    }
+
     ReactDOM.render(
       <AudioPlay />,
       document.getElementById('root')
@@ -53,3 +111,5 @@
 </body>
 
 </html>
+
+<!-- http://musicapi.leanapp.cn/playlist/detail?id=24381616 -->
