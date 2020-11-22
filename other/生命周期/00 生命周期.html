@@ -39,30 +39,20 @@
     }
 
     class Content extends React.Component {
-      // componentWillMount() {
-      //   console.log('Component WILL MOUNT!')
-      // }
+      componentWillMount() {
+        console.log('Component WILL MOUNT!')
+      }
       componentDidMount() {
         console.log('Component DID MOUNT!')
       }
-      // 旧
-      // componentWillReceiveProps(newProps) {
-      //   console.log('Component WILL RECEIVE PROPS!')
-      // }
-      // 新
-      static getDerivedStateFromProps(props, state) {
-        console.log('Get Derived State From Props!')
+      componentWillReceiveProps(newProps) {
+        console.log('Component WILL RECEIVE PROPS!')
       }
       shouldComponentUpdate(newProps, newState) {
         return true;
       }
-      // 旧
-      // componentWillUpdate(nextProps, nextState) {
-      //   console.log('Component WILL UPDATE!');
-      // }
-      // 新
-      getSnapshotBeforeUpdate(prevProps, prevState) {
-        console.log('Get Snapshot Before Update!')
+      componentWillUpdate(nextProps, nextState) {
+        console.log('Component WILL UPDATE!');
       }
       componentDidUpdate(prevProps, prevState) {
         console.log('Component DID UPDATE!')
