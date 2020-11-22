@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Play</title>
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type='text/babel'>
+    class AudioPlay extends React.Component {
+      constructor(props) {
+        super(props);
+        this.durationRef = React.createRef();
+        this.state = {
+          duration: 0,
+        }
+        this.getDuration = this.getDuration.bind(this);
+      }
+
+      getDuration(e) {
+        // this.setState({
+        //   duration: e.target.duration
+        // })
+        this.durationRef.current.duration()
+      }
+
+      render() {
+        const duration = this.state.duration;
+
+        return (
+          <div>
+            <p>{duration}</p>
+            <audio
+              src="https://music.163.com/song/media/outer/url?id=548967.mp3"
+              controls='controls'
+              duration={this.getDuration}
+            />
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(
+      <AudioPlay />,
+      document.getElementById('root')
+    )
+  </script>
+</body>
+
+</html>
