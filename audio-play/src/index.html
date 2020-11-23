@@ -18,14 +18,19 @@
         super(props);
         this.state = {
           isPlay: false,
+          musicList: this.props.musicList ? this.props.musicList : [],
+          currentMusic: this.props.musicList ? this.props.musicList[0] : null,
           duration: 0,
           currentTime: 0,
         }
         this.audioControl = this.audioControl.bind(this);
+        this.prevMusic = this.prevMusic.bind(this);
+        this.nextMusic = this.nextMusic.bind(this);
       }
 
       componentDidMount() {
         console.log(this.audio);
+        console.log(this.state.musicList)
         this.audio.addEventListener('canplay', () => {
           // console.log('canplay');
           // console.log(this.audio.duration);
@@ -43,6 +48,15 @@
 
       componentDidUpdate() {
         console.log('componentDidUpdate')
+      }
+
+      prevMusic() {
+        console.log(this.state.musicList);
+        console.log(this.state.currentMusic);
+      }
+
+      nextMusic() {
+        
       }
 
       audioControl(e) {
@@ -85,26 +99,102 @@
             <p>时间：{this.getTime(this.state.currentTime)} / {this.getTime(this.state.duration)}</p>
             <input
               type="button"
+              value="上一首"
+              onClick={this.prevMusic}
+            />
+            <input
+              type="button"
               value={this.state.isPlay ? 'PAUSE' : 'PLAY'}
               onClick={this.audioControl}
             />
+            <input
+              type="button"
+              value="下一首"
+              onClick={this.nextMusic}
+            />
             <audio
-              src="https://music.163.com/song/media/outer/url?id=548967.mp3"
+              src={`https://music.163.com/song/media/outer/url?id=${this.state.currentMusic.id}.mp3`}
               controls
               ref={ref => this.audio = ref}
             />
+            <ul>
+              {
+                this.state.musicList.map(track => (
+                  <li key={track.id}>
+                    {track.name} {track.id}
+                  </li>
+                ))
+              }
+            </ul>
           </div>
         )
       }
     }
-    
+
     class MusicList extends React.Component {
       // http://musicapi.leanapp.cn/playlist/detail?id=24381616
-      
+      // "https://music.163.com/song/media/outer/url?id=548967.mp3"
+      constructor(props) {
+        super(props);
+        this.state = {
+          error: null,
+          isLoaded: false,
+          tracks: [],
+        };
+      }
+
+      componentDidMount() {
+        fetch("http://musicapi.leanapp.cn/playlist/detail?id=24381616")
+          .then(res => res.json())
+          .then(
+            result => {
+              this.setState({
+                isLoaded: true,
+                tracks: result.playlist.tracks,
+              });
+            },
+            // 注意：需要在此处处理错误
+            // 而不是使用 catch() 去捕获错误
+            // 因为使用 catch 去捕获异常会掩盖掉组件本身可能产生的 bug
+            error => {
+              this.setState({
+                isLoaded: true,
+                error,
+              });
+            },
+          )
+      }
+
+      // <AudioPlay musicSrc={`https://music.163.com/song/media/outer/url?id=${e.target.placeholder}.mp3`} />
+
+      render() {
+        const { error, isLoaded, tracks } = this.state;
+        if (error) {
+          return <div>Error: {error.message}</div>
+        } else if (!isLoaded) {
+          return <div>Loading...</div>
+        } else {
+          return (
+            // <ul>
+            //   {
+            //     tracks.map(track => (
+            //       <li key={track.id}>
+            //         {track.name} {track.id}
+            //         {console.log(this.state.tracks)}
+            //       </li>
+            //     ))
+            //   }
+            // </ul>
+            <AudioPlay
+              musicList={this.state.tracks}
+            />
+          )
+        }
+      }
     }
 
     ReactDOM.render(
-      <AudioPlay />,
+      <MusicList />,
       document.getElementById('root')
     )
   </script>
